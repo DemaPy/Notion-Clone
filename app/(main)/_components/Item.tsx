@@ -1,9 +1,24 @@
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
+import { useUser } from "@clerk/clerk-react";
 import { useMutation } from "convex/react";
-import { ChevronDown, ChevronRight, LucideIcon, Plus } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronRight,
+  LucideIcon,
+  MoreHorizontal,
+  Plus,
+  Trash,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { MouseEvent } from "react";
 import { toast } from "sonner";
@@ -33,11 +48,26 @@ export const Item = ({
   label,
   onClick,
 }: IProps) => {
+  const { user } = useUser();
   const router = useRouter();
   const create = useMutation(api.documents.create);
   const handleExpand = (ev: React.MouseEvent<HTMLDivElement>) => {
     ev.stopPropagation();
     onExpand?.();
+  };
+
+  const archive = useMutation(api.documents.archive);
+
+  const onArchive = (ev: React.MouseEvent<HTMLDivElement>) => {
+    ev.stopPropagation();
+    if (!id) return;
+
+    const promise = archive({ id });
+    toast.promise(promise, {
+      loading: "Moving to trash.",
+      success: "Note moved to trash.",
+      error: "Failed to archive note.",
+    });
   };
 
   const onCreate = (ev: React.MouseEvent<HTMLDivElement>) => {
@@ -60,6 +90,9 @@ export const Item = ({
     });
   };
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
+  {
+    console.log(id);
+  }
 
   return (
     <div
@@ -69,7 +102,7 @@ export const Item = ({
         "group mib-h-[27p] pr-3 w-full hover:bg-primary/5 py-1 items-center flex font-medium text-muted-foreground",
         active && "bg-primary/5 text-primary"
       )}
-      style={{ paddingLeft: level ? `${(level * 12) + 12}px` : "12px" }}
+      style={{ paddingLeft: level ? `${level * 12 + 12}px` : "12px" }}
     >
       {!!id && (
         <div
@@ -93,6 +126,31 @@ export const Item = ({
       )}
       {!!id && (
         <div className="ml-auto flex items-center gap-x-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild onClick={(ev) => ev.stopPropagation()}>
+              <div
+                role="button"
+                className="opacity-0 ml-auto group-hover:opacity-100 rounded-sm hover:bg-neutral-300 h-full"
+              >
+                <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-60"
+              align="start"
+              side="right"
+              forceMount
+            >
+              <DropdownMenuItem onClick={onArchive}>
+                <Trash className="h-4 w-4 mr-2" />
+                Delete
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <div className="text-xs text-muted-foregroundp-2">
+                Last edited by: {user?.fullName}
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <div
             role="button"
             onClick={onCreate}
@@ -110,7 +168,7 @@ Item.Skeleton = function ItemSkeleton({ level }: { level?: number }) {
   return (
     <div
       style={{
-        paddingLeft: level ? `${(level * 12) + 25}px` : "12px",
+        paddingLeft: level ? `${level * 12 + 25}px` : "12px",
       }}
       className="flex gap-x-2 py-[3px]"
     >
