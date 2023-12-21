@@ -7,6 +7,7 @@ import { MenuIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import Title from "./Title";
 import Banner from "./Banner";
+import { Publish } from "./Publish";
 
 type TNavBar = {
   isCollapsed: boolean;
@@ -38,6 +39,7 @@ const NavBar = ({ isCollapsed, onResetWidth }: TNavBar) => {
         )}
         <div className="flex items-center justify-between w-full">
           <Title initialData={document} />
+          <Publish initialData={document} />
         </div>
       </nav>
 
