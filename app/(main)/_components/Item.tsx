@@ -90,9 +90,6 @@ export const Item = ({
     });
   };
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
-  {
-    console.log(id);
-  }
 
   return (
     <div

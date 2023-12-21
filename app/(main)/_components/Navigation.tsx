@@ -23,11 +23,12 @@ import { useMutation, useQuery } from "convex/react";
 import { cn } from "@/lib/utils";
 import { api } from "@/convex/_generated/api";
 import { UserItem } from "./UserItem";
-import NavBar from "@/app/(marketing)/_components/NavBar";
 import { toast } from "sonner";
 import DocumentList from "./DocumentList";
 import TrashBox from "./TrashBox";
 import { useSearch } from "@/hooks/use-search";
+import { useSettings } from "@/hooks/use-settings";
+import NavBar from "./NavBar";
 
 export const Navigation = () => {
   const router = useRouter();
@@ -43,6 +44,7 @@ export const Navigation = () => {
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
   const search = useSearch()
+  const settings = useSettings()
 
   useEffect(() => {
     if (isMobile) {
@@ -153,7 +155,7 @@ export const Navigation = () => {
           <UserItem />
           <Item onClick={handleCreate} label="New page" icon={PlusCircle} />
           <Item onClick={search.onOpen} label="Search" icon={Search} isSearch />
-          <Item onClick={() => {}} label="Settings" icon={Settings} />
+          <Item onClick={settings.onOpen} label="Settings" icon={Settings} />
         </div>
         <div className="mt-4">
           <DocumentList />
@@ -185,7 +187,7 @@ export const Navigation = () => {
         )}
       >
         {!!params.documentId ? (
-          <NavBar />
+          <NavBar isCollapsed={isCollapsed} onResetWidth={resetWidth} />
         ) : (
           <nav className="bg-transparent px-3 py-2 w-full">
             {isCollapsed && (
