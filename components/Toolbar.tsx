@@ -8,6 +8,7 @@ import { ElementRef, useRef, useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import TextAreaAutoSize from "react-textarea-autosize";
+import { useCoverImage } from "@/hooks/use-cover-image";
 
 const Toolbar = ({
   initData,
@@ -20,7 +21,10 @@ const Toolbar = ({
   const [isEdit, setIsEdit] = useState(false);
   const [value, setValue] = useState(initData.title);
 
+  const coverImage = useCoverImage();
+
   const update = useMutation(api.documents.update);
+  const removeIcon = useMutation(api.documents.removeIcon);
 
   const enableInput = () => {
     if (preview) return;
@@ -49,17 +53,28 @@ const Toolbar = ({
     }
   };
 
+  const onIconSelect = (icon: string) => {
+    update({
+      id: initData._id,
+      icon,
+    });
+  };
+
+  const onRemoveIcon = () => {
+    removeIcon({ id: initData._id });
+  };
+
   return (
     <div className="pl-[54px] group relative">
       {!!initData.icon && !preview && (
         <div className="flex items-center gap-x-2 group/icon pt-6">
-          <IconPicker onChange={() => {}}>
+          <IconPicker onChange={onIconSelect}>
             <p className="text-6xl hover:opacity-75 transition">
               {initData.icon}
             </p>
           </IconPicker>
           <Button
-            onClick={() => {}}
+            onClick={onRemoveIcon}
             className="rounded-full opacity-0 group-hover/icon:opacity-0 transition text-muted-foreground text-xs"
             variant={"outline"}
             size={"icon"}
@@ -73,7 +88,7 @@ const Toolbar = ({
       )}
       <div className="opacity-0 group-hover:opacity-100 flex items-center gap-x-1 py-4">
         {!initData.icon && !preview && (
-          <IconPicker asChild onChange={() => {}}>
+          <IconPicker asChild onChange={onIconSelect}>
             <Button
               size={"sm"}
               className="text-muted-foreground text-xs"
@@ -89,7 +104,7 @@ const Toolbar = ({
             className="text-muted-foreground text-xs"
             size={"sm"}
             variant={"outline"}
-            onClick={() => {}}
+            onClick={coverImage.onOpen}
           >
             <ImageIcon className="h-4 w-4 mr-2" />
             Add cover

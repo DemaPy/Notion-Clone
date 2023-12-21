@@ -4,6 +4,7 @@ import "./globals.css";
 import { ConvexProvider } from "@/components/providers/convex-providers";
 import { Toaster } from "sonner";
 import ModalProvider from "@/components/providers/modal-provider";
+import { EdgeStoreProvider } from "@/lib/edgestore";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -32,9 +33,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ConvexProvider>
-          <Toaster position="bottom-center" />
-          <ModalProvider />
-          {children}
+          <EdgeStoreProvider>
+            <Toaster position="bottom-center" />
+            <ModalProvider />
+            {children}
+          </EdgeStoreProvider>
         </ConvexProvider>
       </body>
     </html>
