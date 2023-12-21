@@ -26,6 +26,8 @@ import { UserItem } from "./UserItem";
 import NavBar from "@/app/(marketing)/_components/NavBar";
 import { toast } from "sonner";
 import DocumentList from "./DocumentList";
+import TrashBox from "./TrashBox";
+import { useSearch } from "@/hooks/use-search";
 
 export const Navigation = () => {
   const router = useRouter();
@@ -40,6 +42,7 @@ export const Navigation = () => {
   const navbarRef = useRef<ElementRef<"div">>(null);
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
+  const search = useSearch()
 
   useEffect(() => {
     if (isMobile) {
@@ -149,7 +152,7 @@ export const Navigation = () => {
         <div>
           <UserItem />
           <Item onClick={handleCreate} label="New page" icon={PlusCircle} />
-          <Item onClick={() => {}} label="Search" icon={Search} isSearch />
+          <Item onClick={search.onOpen} label="Search" icon={Search} isSearch />
           <Item onClick={() => {}} label="Settings" icon={Settings} />
         </div>
         <div className="mt-4">
@@ -163,7 +166,7 @@ export const Navigation = () => {
               className="p-0 w-72"
               side={isMobile ? "bottom" : "right"}
             >
-              <p>Trash box</p>
+              <TrashBox />
             </PopoverContent>
           </Popover>
         </div>
