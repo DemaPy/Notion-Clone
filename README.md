@@ -1,4 +1,16 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Meet my another one pet project Jotion.
+
+I have tried to do that with new for me technologies like real time DB Convex by YT tutorial.
+Also I found really interestin tool for creating Notes. It is [BlockNoteEditor]([url](https://www.blocknotejs.org/))
+And here is the result.
+
+# Welcome page
+![image](https://github.com/DemaPy/Notion-Clone/assets/80632445/3e419a0b-4462-4e1a-aa75-7994b39cd4c8)
+
+# Document page
+![image](https://github.com/DemaPy/Notion-Clone/assets/80632445/414186f0-604b-4722-a695-9720dd48f6c5)
+
+![image](https://github.com/DemaPy/Notion-Clone/assets/80632445/3fc18d57-0c7a-446e-b0c7-7f038bb7a328)
 
 ## Getting Started
 
