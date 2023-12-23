@@ -12,7 +12,8 @@ type TEditor = {
 
 const Editor = ({ onChange, editable, initialContent }: TEditor) => {
   const { edgestore } = useEdgeStore();
-
+  console.log('test');
+  
   const handleUpload = async (file: File) => {
     const response = await edgestore.publicFiles.upload({ file });
 

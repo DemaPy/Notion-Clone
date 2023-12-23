@@ -45,9 +45,11 @@ const DocPage = ({ params: { documentId } }: TDocPage) => {
   return (
     <div className="pb-40">
       <Cover url={document.coverImage} />
-      <div className="md:max-w-3xl md:px-6 lg:max-w-4xl mx-auto">
-        <Toolbar preview initData={document} />
-        <Editor editable={false} onChange={onChange} initialContent={document.content} />
+      <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
+        <Toolbar initialData={document} />
+        <div className="ps-12">
+          <Editor onChange={onChange} initialContent={document.content} />
+        </div>
       </div>
     </div>
   );
